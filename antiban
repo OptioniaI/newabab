@@ -1,0 +1,22 @@
+            local lplr = game.Players.LocalPlayer
+            local grp = lplr:GetRankInGroup(7548958)
+
+            local Players = game:GetService("Players")
+            game.Players.PlayerAdded:Connect(function(player)
+
+            if player:IsInGroup(7548958) then
+
+            lplr:Kick("Staff Joined! Finding a new server..")
+            local x = {}
+                for _, v in ipairs(game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100")).data) do
+                if type(v) == "table" and v.maxPlayers > v.playing and v.id ~= game.JobId then
+                x[#x + 1] = v.id
+        end
+    end
+    if #x > 0 then
+        game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, x[math.random(1, #x)])
+    else
+        warn("Couldn't find a server!")
+    end    
+    end
+end)
